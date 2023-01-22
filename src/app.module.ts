@@ -11,11 +11,16 @@ import { MongooseModule } from '@nestjs/mongoose';
 //import { ExpensesService } from './expenses/expenses.service';
 //import { IncomesController } from './incomes/incomes.controller';
 //import { IncomesService } from './incomes/incomes.service';
+// import { AuthController } from './auth/auth.controller';
+// import { AuthService } from './auth/auth.service';
 import config from './config/keys';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
-  imports: [ WalletsModule, ExpensesModule, IncomesModule, MongooseModule.forRoot(config.mongoURI)],
+  imports: [ WalletsModule, ExpensesModule, IncomesModule, AuthModule, MongooseModule.forRoot(config.mongoURI)],
+  // controllers: [AuthController],
+  // providers: [AuthService],
   // controllers: [IncomesController],
   // providers: [IncomesService],
   // controllers: [ExpensesController],
