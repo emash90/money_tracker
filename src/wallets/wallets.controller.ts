@@ -1,33 +1,35 @@
 import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
 import { CreateWalletDto } from './dto/create_wallet_dto';
+import { WalletsService } from './wallets.service';
+import { Wallet } from './interfaces/wallet.interface';
 
 
 
 @Controller('wallets')
 export class WalletsController {
+    constructor(private readonly walletsService: WalletsService) {}
     @Get() // GET /wallets
-    findAll(): string {
-        return 'This action returns all wallets';
+    findAll(): Promise<Wallet[]> {
+        return this.walletsService.findAll();
     }
 
     @Get(':id') // :id is a placeholder for a parameter
-    findOne(@Param() params): string {
-        console.log(params.id);
-        return `This action returns wallet #${params.id}`;
+    findOne(@Param() params): Promise<Wallet> { // @Param() is a decorator that extracts the parameter from the request object
+        return this.walletsService.findOne(params.id);
     }
 
     @Post() // POST /wallets
-    create(@Body() createWalletDto: CreateWalletDto): string {
-        return `This action adds a new wallet with name ${createWalletDto.name} and balance ${createWalletDto.balance}`;
+    create(@Body() createWalletDto: CreateWalletDto): Promise<Wallet> {
+        return this.walletsService.create(createWalletDto);
     }
 
-    @Put(':id') // PUT /wallets/:id
-    update(@Param('id') id, @Body() updateWalletDto: CreateWalletDto): string {
-        return `This action updates a wallet #${id} with name ${updateWalletDto.name} and balance ${updateWalletDto.balance}`;
+    @Put(':id') // PATCH /wallets/:id
+    update(@Param('id') id, @Body() updateWalletDto: CreateWalletDto): Promise<Wallet> {
+        return this.walletsService.update(id, updateWalletDto);
     }
 
     @Delete(':id') // DELETE /wallets/:id
-    remove(@Param('id') id): string {
-        return `This action removes a wallet #${id}`;
+    remove(@Param('id') id): Promise<Wallet> {
+        return this.walletsService.delete(id);
     }
 }
