@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { CreateUserDto } from './dto/create_user.dto';
 import { User } from './interfaces/user.interface';
 import { AuthService } from './auth.service';
+import { Wallet } from 'src/wallets/interfaces/wallet.interface';
 
 
 @Controller('auth')
@@ -28,6 +29,11 @@ export class AuthController {
     @Get('users')
     getAllUsers(): Promise<User[]> {
         return this.authService.getAllUsers();
+    }
+
+    @Get('users/:id')
+    getUserWallets(@Param() Params): Promise<Wallet[] | String> {
+        return this.authService.getUserWallets(Params.id);
     }
 
     
