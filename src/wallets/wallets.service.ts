@@ -14,9 +14,14 @@ export class WalletsService {
         return await this.walletModel.findById(id);
     }
 
-    async create(wallet: Wallet): Promise<Wallet> {
+    async create(wallet: Wallet): Promise<String | Wallet> {
+        const checkWalletName = await this.walletModel.findOne({ name: wallet.name });
+        if (checkWalletName) {
+            return 'Wallet name already exists';
+        } else {
         const newWallet = new this.walletModel(wallet);
         return await newWallet.save();
+        }
     }
 
     async update(id: string, wallet: Wallet): Promise<Wallet> {

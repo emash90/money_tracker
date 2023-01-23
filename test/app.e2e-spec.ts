@@ -15,10 +15,41 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
+  it('/wallets (GET)', () => {
     return request(app.getHttpServer())
-      .get('/')
+      .get('/wallets')
       .expect(200)
-      .expect('Hello World!');
-  });
+      .expect(({ body }) => {
+        expect(body).toEqual(expect.any(Array));
+      })
+  }, 10000);
+
+  it('/expenses (GET)', () => {
+    return request(app.getHttpServer())
+      .get('/expenses')
+      .expect(200)
+      .expect(({ body }) => {
+        expect(body).toEqual(expect.any(Array));
+      })
+  })
+  
+  it('/incomes (GET)', () => {
+    return request(app.getHttpServer())
+      .get('/incomes')
+      .expect(200)
+      .expect(({ body }) => {
+        expect(body).toEqual(expect.any(Array));
+      })
+  })
+
+  it('/auth/login (POST)', () => {
+    return request(app.getHttpServer())
+      .post('/auth/login')
+      .send({ username: 'admin', password: 'admin' })
+      .expect(201)
+      .expect(({ body }) => {
+        expect(body).toEqual(expect.any(Object));
+      })
+  })
+
 });
