@@ -2,11 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './interfaces/user.interface';
+import { Wallet } from '../wallets/interfaces/wallet.interface';
 
 
 @Injectable()
 export class AuthService {
-    constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
+    constructor(
+        @InjectModel('User') private readonly userModel: Model<User>,
+        @InjectModel('Wallet') private readonly walletModel: Model<Wallet>
+    ) {}
 
     async createUser(user: User): Promise<String | User>  {
         console.log(`user: ${user}  user.username: ${user.username} user.password: ${user.password}`);
@@ -53,6 +57,14 @@ export class AuthService {
             return get_user;
         } else {
             return 'User not found';
+        }
+    }
+    async getUserWallets(id: string): Promise<Wallet[] | String> {
+        const getWallets = await this.walletModel.find({ userId: id });
+        if (getWallets) {
+            return getWallets;
+        } else {
+            return 'User does not have any wallets';
         }
     }
 
