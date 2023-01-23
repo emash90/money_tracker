@@ -19,7 +19,7 @@ export class WalletsController {
     }
 
     @Post() // POST /wallets
-    create(@Body() createWalletDto: CreateWalletDto): Promise<Wallet> {
+    create(@Body() createWalletDto: CreateWalletDto): Promise<String | Wallet> {
         return this.walletsService.create(createWalletDto);
     }
 
